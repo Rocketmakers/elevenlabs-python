@@ -41,6 +41,7 @@ def generate(
     stream: bool = False,
     latency: int = 1,
     stream_chunk_size: int = 2048,
+    output_format: Optional[str] = "mp3_44100"
 ) -> Union[bytes, Iterator[bytes]]:
 
     if isinstance(voice, str):
@@ -64,10 +65,10 @@ def generate(
     if stream:
         if isinstance(text, str):
             return TTS.generate_stream(
-                text, voice, model, stream_chunk_size, api_key=api_key, latency=latency
+                text, voice, model, stream_chunk_size, api_key=api_key, latency=latency, output_format=output_format
             )  # noqa E501
         elif isinstance(text, Iterator):
-            return TTS.generate_stream_input(text, voice, model, api_key=api_key)
+            return TTS.generate_stream_input(text, voice, model, api_key=api_key, output_format=output_format)
     else:
         assert isinstance(text, str)
         return TTS.generate(text, voice, model, api_key=api_key)
